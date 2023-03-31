@@ -1,2 +1,5 @@
 *.json
 *.tar
+*.ipynb_checkpoints
+venv
+*.png
