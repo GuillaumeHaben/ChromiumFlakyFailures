@@ -30,3 +30,52 @@ Scripts can be found as 2 Jupyter Notebooks.
 Command to launch Jupyter Notebook:
 - `pip install notebook`
 - `jupyter notebook` (Launch both notebooks with the chromium kernel)
+
+# Dataset collection
+
+## Build Dataset
+
+* Get information about a builder
+
+`python buildDataset.py /PATH/TO/RESULTS BUCKET BUILDER_NAME BUILD_NUMBER NB_BUILDS`
+
+Will get information about the BUILDER_NAME from BUCKET. 
+Starts with BUILD_NUMBER, then analyze past NB_BUILDS. 
+Save results in /PATH/TO/RESULTS
+
+e.g. `python buildDataset.py ./results ci Mac11.0_Tests 825 2` will get information about tests, build, artifacts for [https://ci.chromium.org/ui/p/chromium/builders/ci/Mac11.0%20Tests/825/test-results?q=](https://ci.chromium.org/ui/p/chromium/builders/ci/Mac11.0%20Tests/825/test-results?q=) and 1 build before (824). Will save the results in `./results`
+
+Important: Space in the builder name should be replaced with `_`
+
+* Results
+
+Results are saved in `./results`
+
+Folder structure:
+```
+./results/
+    BUCKET.BUILDER_NAME.BUILD_NUMBER/
+        testsInfo.json
+        buildInfo.json
+        1/
+            testInfo.json
+            Run-ResultId/
+                artifacts[.txt|.html]
+
+```
+
+## Get Sources
+
+
+* Following updates on the platform, this script add test sources for the current commit.
+Works for tests which do not contain line number in their metadata (full file test) so mainly `.html` and `.js`. 
+
+`python getSources.py /PATH/TO/RESULTS/BUILDER/`
+
+
+## Prepare Dataset
+
+
+* Go through the results folder and prepare a JSON dataset.
+
+`python prepareDataset.py /PATH/TO/RESULTS/BUILDER/`
