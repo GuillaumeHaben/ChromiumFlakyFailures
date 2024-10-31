@@ -26,10 +26,10 @@ headers = {
 
 
 # Some parameters for the program
-saveArtifacts = True
+saveArtifacts = False
 saveSwarmingTask = False
 notification = False
-savePassTests = False
+savePassTests = True
 
 resultsFolder = ""
 bucket = ""
@@ -305,12 +305,12 @@ def getTests(testsInfo):
 # Used later for QueryTestVariants
 def getInvocation(buildInfo):
     invocation = ""
-    # Proto.v2
-    if "resultdb" in buildInfo["infra"]["swarming"]:
-        invocation = buildInfo["infra"]["swarming"]["resultdb"]["invocation"]
     # Proto.v1
-    elif "resultdb" in buildInfo["infra"]:
+    if "resultdb" in buildInfo["infra"]:
         invocation = buildInfo["infra"]["resultdb"]["invocation"]
+    # Proto.v2
+    elif "resultdb" in buildInfo["infra"]["swarming"]:
+        invocation = buildInfo["infra"]["swarming"]["resultdb"]["invocation"]
     else:
         print("No invocation found")
     return invocation
